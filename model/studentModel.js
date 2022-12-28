@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-// const Grade = require('./gradeModel')
 
 const studentSchema = new mongoose.Schema({
     name:{
@@ -26,12 +25,6 @@ const studentSchema = new mongoose.Schema({
     timestamps :true
 })
 
-// studentSchema.virtual('tasks',{
-//     ref: Grade,
-//     localField: '_id',
-//     foreignField: 'student_id'
-       
-// }) 
 
 
 const Student = mongoose.model('students',studentSchema)
