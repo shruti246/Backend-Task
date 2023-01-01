@@ -1,7 +1,7 @@
 const Students = require('../model/studentModel')
 const gradeModel = require('../model/gradeModel')
 const {stundentValidation} = require('../middleware/validation')
-
+var objectid = require('objectid')
 
 /**add students */
 exports.addStudent = async(req,res)=>{
@@ -21,13 +21,14 @@ exports.getStudents = async(req,res)=>{
 
     try{
        if(req.params.id){
-            const students = await Students.findById(req.params.id)
-            if(!students){
+         // const  ss = await Students.aggregate([{$match:{_id:objectid('63ab4dba9e22a78ddeedf111')}}]) 
+            const students = await Students.aggregate([{$match:{_id:objectid(req.params.id)}},{ $lookup: { from: 'grades', localField: '_id', foreignField: 'student_id', as: 'result' } }]);
+            if(students.length == 0){
                 res.status(400).send({error:'Student Not Found'})
             }
-            res.send(students)
+            res.send({students})
        }else{
-        const students = await Students.aggregate([ { $lookup: { from: 'grades', localField: '_id', foreignField: 'student_id', as: 'result' } },]);
+        const students = await Students.aggregate([{ $lookup: { from: 'grades', localField: '_id', foreignField: 'student_id', as: 'result' } }]);
         res.send(students)
        } 
     }catch(e){
