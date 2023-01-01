@@ -21,6 +21,6 @@ app.use(routes)
 
 
 /*listing port */
-app.listen(3000,()=>{
+app.listen(process.env.PORT,()=>{
     logger.log('info',`server is run up on port ${process.env.PORT}`)
 })
